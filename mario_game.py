@@ -1,54 +1,49 @@
+__author__      = "Ariel Anderson"
+__copyright__   = "Copyright 2023, SIE508, University of Maine"
+__credits__     = ["Ariel Anderson"]
+
 class Game: 
-    def __init__(self):
+    ## Intializes internal list of avatars.
+    def startGame(self):
+
         self.avatar_list = []
-    def add_avatar(self, name): 
-        results = list(filter(lambda x: x['name'] == name, self.avatar_list))
-        if results:
-            print("stored")
-        else:
-            self.avatar_list.append({'name': name})
-    def add_all_Avatar(self, avatar_list):
-        for avatar in avatar_list:
-            self.avatar_list.append(avatar) 
-    def delete_avatar(self, name):
 
-        idxs_items = list(
-        filter(lambda i_x: i_x[1]['name'] == name, enumerate(self.avatar_list)))
+    ## Adds avatars one at a time to internal list.     
+    def add_avatar(self, avatar): 
+
+        for i in self.avatar_list:
+            if i.name == avatar.name:
+                print("stored")
+                return
+        self.avatar_list.append(avatar)
     
-        if idxs_items: 
-            i, item_to_delete = idxs_items[0][0], idxs_items[0][1]
-        #print("idxs_items[0][0], idxs_items[0][1]: ", idxs_items[0][0], " item in list, value:", idxs_items[0][1])
-            del self.avatar_list[i]
-        
-        else:
-            print('Can\'t delete "{}" because it\'s not stored')
+    ## Adds all avatars to internal list as a bulk action. 
+    def add_avatars(self, avatar_list): 
+
+        for avatar in avatar_list: 
+            self.add_avatar(avatar)
+
+    ## Animates all avatars at the same time. 
+    def animate_avatars(self): 
+
+        for avatar_obj in self.avatar_list: 
+            avatar_obj.animate()
+
+    ## Deletes one avatar from the list at a time. 
+    def delete_avatar(self, avatar):
+
+        remaining_avatars = []
+        for avatarname in self.avatar_list:
+           if avatarname.name != avatar: 
+              remaining_avatars.append(avatarname)
+
+        self.avatar_list = remaining_avatars
+
+    ## Deletes all avatars from internal list ending the game. 
     def stopGame(self): 
+
         self.avatar_list.clear() 
-
-class Avatar: 
-    def __init__(self, name, hair, height, superpower):
-        self.name = name
-        self.hair = hair
-        self.height = height
-        self.superpower = superpower 
+        print('Game Over')
 
 
 
-mygame = Game()
-avatar = Avatar() 
-
-avatar1 = ('Peach', 'Blonde', 64, 'Magic')
-
-
-mygame.add_all_Avatar(avatar1)
-
-
-print(mygame.avatar_list)
-
-mygame.delete_avatar('Peach')
-
-print(mygame.avatar_list)
-
-mygame.stopGame()
-
-print(mygame.avatar_list)
